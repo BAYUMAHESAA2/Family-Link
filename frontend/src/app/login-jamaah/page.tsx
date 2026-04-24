@@ -35,7 +35,8 @@ export default function LoginPage() {
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-emerald-700">Family Link</h1>
-          <p className="text-gray-500 mt-2">Pantau lokasi jamaah dengan mudah</p>
+          <h1 className="text-1xl font-bold text-emerald-600">Berbagi Lokasi</h1>
+          <p className="text-gray-500 mt-2">Login untuk meminta lokasi</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
@@ -76,9 +77,9 @@ export default function LoginPage() {
         </form>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          Belum punya akun?{' '}
-          <a href="/register" className="text-emerald-600 font-medium hover:underline">
-            Daftar
+          Akses ke Family Link = {' '}
+          <a href="/login" className="text-emerald-600 font-medium hover:underline">
+            Familiy Link
           </a>
         </p>
       </div>

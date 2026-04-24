@@ -1,31 +1,32 @@
 // frontend/src/app/login/page.tsx
-'use client';
-import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import api from '@/lib/api';
-import Cookies from 'js-cookie';
+"use client";
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import api from "@/lib/api";
+import Cookies from "js-cookie";
 
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirect') || '/dashboard';
+  const redirectTo = searchParams.get("redirect") || "/dashboard";
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const isFormFilled = email.trim() !== '' || password.trim() !== '';
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
     try {
-      const res = await api.post('/auth/login', { email, password });
-      Cookies.set('token', res.data.access_token, { expires: 7 });
-      Cookies.set('user', JSON.stringify(res.data.user), { expires: 7 });
+      const res = await api.post("/auth/login", { email, password });
+      Cookies.set("token", res.data.access_token, { expires: 7 });
+      Cookies.set("user", JSON.stringify(res.data.user), { expires: 7 });
       router.push(redirectTo); // redirect ke halaman yang dituju
     } catch {
-      setError('Email atau password salah');
+      setError("Email atau password salah");
     } finally {
       setLoading(false);
     }
@@ -66,29 +67,20 @@ export default function LoginPage() {
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-emerald-700 hover:bg-emerald-700 text-white font-semibold py-2 rounded-lg transition"
-          >
-            {loading ? 'Masuk...' : 'Masuk'}
+          <button type="submit" disabled={loading} className="w-full bg-emerald-700 hover:bg-emerald-700 text-white font-semibold py-2 rounded-lg transition">
+            {loading ? "Masuk..." : "Masuk"}
           </button>
 
           <button
             type="button"
-            onClick={() => router.push('/login-jamaah')}
-            className="w-full border border-emerald-700 text-emerald-700 hover:bg-emerald-50 font-semibold py-2 rounded-lg transition"
+            onClick={() => router.push("/login-jamaah")}
+            disabled={isFormFilled}
+            className={`w-full border border-emerald-700 font-semibold py-2 rounded-lg transition
+    ${isFormFilled ? "bg-gray-200 text-gray-400 cursor-not-allowed border-gray-300" : "text-emerald-700 hover:bg-emerald-50"}`}
           >
             Masuk sebagai Jamaah
           </button>
         </form>
-
-        <p className="text-center text-sm text-gray-500 mt-6">
-          Belum punya akun?{' '}
-          <a href="/register" className="text-emerald-600 font-medium hover:underline">
-            Daftar
-          </a>
-        </p>
       </div>
     </div>
   );
