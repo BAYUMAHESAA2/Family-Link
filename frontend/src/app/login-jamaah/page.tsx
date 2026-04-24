@@ -1,4 +1,3 @@
-// frontend/src/app/login/page.tsx
 'use client';
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -8,7 +7,7 @@ import Cookies from 'js-cookie';
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirect') || '/dashboard';
+  const redirectTo = searchParams.get('redirect') || '/location-screen';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -74,13 +73,6 @@ export default function LoginPage() {
             {loading ? 'Masuk...' : 'Masuk'}
           </button>
 
-          <button
-            type="button"
-            onClick={() => router.push('/login-jamaah')}
-            className="w-full border border-emerald-700 text-emerald-700 hover:bg-emerald-50 font-semibold py-2 rounded-lg transition"
-          >
-            Masuk sebagai Jamaah
-          </button>
         </form>
 
         <p className="text-center text-sm text-gray-500 mt-6">

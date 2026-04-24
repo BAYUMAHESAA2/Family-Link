@@ -1,17 +1,27 @@
 // frontend/src/app/location-screen/page.tsx
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import { MapPin, Wifi, WifiOff, CheckCircle } from 'lucide-react';
 
 export default function LocationScreen() {
-  const router = useRouter();
   const [status, setStatus] = useState<'idle' | 'requesting' | 'active' | 'error'>('idle');
   const [coords, setCoords] = useState<{ lat: number; lng: number; accuracy: number } | null>(null);
   const [lastSent, setLastSent] = useState<Date | null>(null);
   const [error, setError] = useState('');
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const getGeoErrorMessage = (err: GeolocationPositionError) => {
+    switch (err.code) {
+      case err.PERMISSION_DENIED:
+        return 'Izin lokasi ditolak. Aktifkan izin lokasi untuk situs ini di browser.';
+      case err.POSITION_UNAVAILABLE:
+        return 'Lokasi tidak tersedia. Pastikan GPS/perangkat lokasi aktif.';
+      case err.TIMEOUT:
+        return 'Permintaan lokasi timeout. Coba lagi di tempat dengan sinyal lebih baik.';
+      default:
+        return 'Gagal mendapatkan lokasi. Coba lagi.';
+    }
+  };
 
   const sendLocation = async (lat: number, lng: number, accuracy: number) => {
     try {
@@ -25,6 +35,13 @@ export default function LocationScreen() {
   const startTracking = () => {
     setStatus('requesting');
     setError('');
+
+    // Geolocation hanya berjalan di secure context (HTTPS atau localhost).
+    if (!window.isSecureContext) {
+      setError('Lokasi butuh koneksi aman (HTTPS/localhost). Buka aplikasi lewat localhost atau HTTPS.');
+      setStatus('error');
+      return;
+    }
 
     if (!navigator.geolocation) {
       setError('Browser tidak mendukung GPS');
@@ -48,7 +65,7 @@ export default function LocationScreen() {
         }, 30000);
       },
       (err) => {
-        setError('Izin lokasi ditolak. Mohon aktifkan GPS.');
+        setError(getGeoErrorMessage(err));
         setStatus('error');
       },
       { enableHighAccuracy: true },
@@ -123,20 +140,12 @@ export default function LocationScreen() {
             {status === 'requesting' ? 'Memproses...' : '📍 Mulai Berbagi Lokasi'}
           </button>
         ) : (
-          <div className="space-y-3">
-            <button
-              onClick={() => router.push('/dashboard')}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition text-lg"
-            >
-              Kembali ke Dashboard
-            </button>
-            <button
-              onClick={stopTracking}
-              className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition text-lg"
-            >
-              ⏹ Hentikan Berbagi
-            </button>
-          </div>
+          <button
+            onClick={stopTracking}
+            className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition text-lg"
+          >
+            ⏹ Hentikan Berbagi
+          </button>
         )}
 
         <p className="text-xs text-gray-400 mt-4">Lokasi diperbarui setiap 30 detik</p>
