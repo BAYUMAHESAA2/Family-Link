@@ -1,10 +1,12 @@
 // frontend/src/app/location-screen/page.tsx
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import { MapPin, Wifi, WifiOff, CheckCircle } from 'lucide-react';
 
 export default function LocationScreen() {
+  const router = useRouter();
   const [status, setStatus] = useState<'idle' | 'requesting' | 'active' | 'error'>('idle');
   const [coords, setCoords] = useState<{ lat: number; lng: number; accuracy: number } | null>(null);
   const [lastSent, setLastSent] = useState<Date | null>(null);
@@ -66,7 +68,7 @@ export default function LocationScreen() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-600 to-green-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-100 to-emerald-500 flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm text-center">
         <div className="mb-6">
           <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 ${
@@ -74,7 +76,7 @@ export default function LocationScreen() {
           }`}>
             <MapPin className={`w-12 h-12 ${status === 'active' ? 'text-green-600' : 'text-gray-400'}`} />
           </div>
-          <h1 className="text-2xl font-bold text-gray-800">Location Screen</h1>
+          <h1 className="text-2xl font-bold text-gray-700">Location Screen</h1>
           <p className="text-gray-500 text-sm mt-1">Family Link — Jamaah Tracker</p>
         </div>
 
@@ -121,12 +123,20 @@ export default function LocationScreen() {
             {status === 'requesting' ? 'Memproses...' : '📍 Mulai Berbagi Lokasi'}
           </button>
         ) : (
-          <button
-            onClick={stopTracking}
-            className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition text-lg"
-          >
-            ⏹ Hentikan Berbagi
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition text-lg"
+            >
+              Kembali ke Dashboard
+            </button>
+            <button
+              onClick={stopTracking}
+              className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition text-lg"
+            >
+              ⏹ Hentikan Berbagi
+            </button>
+          </div>
         )}
 
         <p className="text-xs text-gray-400 mt-4">Lokasi diperbarui setiap 30 detik</p>

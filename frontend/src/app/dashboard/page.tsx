@@ -254,7 +254,12 @@ export default function DashboardPage() {
             <div className="h-full flex flex-col items-center justify-center text-gray-400 gap-2">
               <MapPin className="w-12 h-12 text-gray-300" />
               <p>Jamaah belum membagikan lokasi</p>
-              <p className="text-sm text-gray-400">Minta jamaah buka halaman Location Screen</p>
+              <button
+                onClick={() => router.push('/location-screen')}
+                className="mt-1 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
+              >
+                Buka Location Screen
+              </button>
             </div>
           )}
         </div>
