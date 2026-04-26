@@ -157,7 +157,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* ══════════════ HEADER ══════════════ */}
-      <header className="bg-emerald-700 text-white px-4 py-3 flex items-center justify-between shadow-md sticky top-0 z-50">
+      <header className="bg-emerald-700 text-white px-4 py-3 flex items-center justify-between shadow-md sticky top-0 z-[1000]">
         {/* Brand */}
         <div className="flex items-center gap-2 min-w-0">
           <div className="w-8 h-8 bg-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -272,10 +272,7 @@ export default function DashboardPage() {
           </div>
 
           {/* MAP */}
-          <div
-            ref={mapRef}
-            className="bg-white overflow-hidden mx-3 sm:mx-4 lg:mx-0 h-[220px] sm:h-[260px] md:h-[320px] lg:h-[500px] lg:rounded-2xl lg:shadow"
-          >
+          <div ref={mapRef} className="bg-white overflow-hidden mx-3 sm:mx-4 lg:mx-0 h-[220px] sm:h-[260px] md:h-[320px] lg:h-[500px] lg:rounded-2xl lg:shadow isolate">
             {loading ? (
               <div className="h-full flex items-center justify-center text-gray-400">
                 <div className="text-center">
