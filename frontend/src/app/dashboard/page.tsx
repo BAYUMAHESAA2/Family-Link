@@ -155,87 +155,86 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* ══════════════ HEADER ══════════════ */}
-      <header className="bg-emerald-700 text-white px-4 py-3 flex items-center justify-between shadow-md sticky top-0 z-[1000]">
-        {/* Brand */}
-        <div className="flex items-center gap-2 min-w-0">
-          <div className="w-8 h-8 bg-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
-            <MapPin className="w-4 h-4 text-white" />
-          </div>
-          <div className="min-w-0">
-            <h1 className="text-sm sm:text-base font-bold leading-tight">Family Link</h1>
-            {/* Nama aman karena hanya dirender setelah mounted */}
-            <p className="text-emerald-200 text-xs truncate max-w-[120px] sm:max-w-none">Halo, {user?.name || "Keluarga"}</p>
-          </div>
+    <div className="min-h-screen bg-gray-50 flex overflow-x-hidden">
+      {/* ══════════════ LEFT SIDEBAR ══════════════ */}
+      <aside className="hidden md:flex w-20 shrink-0 flex-col items-center bg-emerald-700 text-white py-4 sticky top-0 h-screen shadow-lg">
+        <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center">
+          <MapPin className="w-5 h-5 text-white" />
         </div>
+      </aside>
 
-        {/* Controls */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <div className="flex bg-emerald-800/60 rounded-xl p-1 gap-0.5">
-            <button
-              onClick={handleSwitchToLive}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${viewMode === "live" ? "bg-white text-emerald-700 shadow" : "text-emerald-200 hover:text-white"}`}
-            >
+      {/* ══════════════ BODY ══════════════ */}
+      <div className="flex flex-col lg:flex-row flex-1 lg:gap-4 lg:p-4 w-full pb-4">
+        {/* Mobile top controls */}
+        <div className="md:hidden bg-emerald-700 text-white px-4 py-3 shadow-sm">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 bg-emerald-600 rounded-xl flex items-center justify-center">
+              <MapPin className="w-4 h-4 text-white" />
+            </div>
+            <h1 className="text-base font-bold">Family Link</h1>
+          </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            <button onClick={handleSwitchToLive} className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold ${viewMode === "live" ? "bg-white text-emerald-700" : "bg-emerald-800/60 text-emerald-100"}`}>
               <Radio className="w-3 h-3" />
               Live
-              {viewMode === "live" && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />}
             </button>
-            <button
-              onClick={handleSwitchToHistory}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${viewMode === "history" ? "bg-white text-emerald-700 shadow" : "text-emerald-200 hover:text-white"}`}
-            >
+            <button onClick={handleSwitchToHistory} className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold ${viewMode === "history" ? "bg-white text-emerald-700" : "bg-emerald-800/60 text-emerald-100"}`}>
               <History className="w-3 h-3" />
               Riwayat
             </button>
+            <button onClick={handleLogout} className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-800/60 text-emerald-100">
+              <LogOut className="w-3 h-3" />
+              Keluar
+            </button>
           </div>
-
-          <button onClick={handleLogout} title="Keluar" className="bg-emerald-800 hover:bg-emerald-900 p-2 rounded-lg transition flex items-center gap-1.5">
-            <LogOut className="w-4 h-4" />
-            <span className="hidden sm:inline text-xs font-medium">Keluar</span>
-          </button>
         </div>
-      </header>
-
-      {/* ══════════════ BODY ══════════════
-          Mobile  (<lg): single column, stacked
-          Desktop (≥lg): map left + sidebar right
-      ══════════════ */}
-      <div className="flex flex-col lg:flex-row flex-1 lg:gap-4 lg:p-4 lg:max-w-screen-xl lg:mx-auto w-full">
         {/* ─── LEFT: Map column ─── */}
         <div className="flex flex-col flex-1 min-w-0">
-          {/* Info bar */}
-          <div className="bg-white border-b border-gray-100 lg:rounded-2xl lg:shadow lg:mb-3 px-4 py-3 flex items-center justify-between gap-2">
-            {viewMode === "live" ? (
-              <>
+          {/* Desktop top controls (above map) */}
+          <div className="hidden md:block px-4 lg:px-0 lg:mb-3">
+            <h1 className="text-xl font-bold text-gray-800 mb-3">Family Link</h1>
+            <div className="flex items-center gap-2 flex-wrap">
+              <button onClick={handleSwitchToLive} className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${viewMode === "live" ? "bg-emerald-600 text-white shadow" : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"}`}>
+                <Radio className="w-3 h-3" />
+                Live
+              </button>
+              <button onClick={handleSwitchToHistory} className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${viewMode === "history" ? "bg-emerald-600 text-white shadow" : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"}`}>
+                <History className="w-3 h-3" />
+                Riwayat
+              </button>
+              <button onClick={handleLogout} className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 transition-all">
+                <LogOut className="w-3 h-3" />
+                Keluar
+              </button>
+            </div>
+          </div>
+
+          {viewMode === "live" && (
+            <div className="lg:hidden mx-3 sm:mx-4 rounded-2xl bg-white shadow border border-gray-100 overflow-hidden mb-3">
+              <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 min-w-0">
-                  <div className={`p-2 rounded-full flex-shrink-0 ${location ? "bg-emerald-100" : "bg-gray-100"}`}>
+                  <div className={`p-2 rounded-full ${location ? "bg-emerald-100" : "bg-gray-100"}`}>
                     <MapPin className={`w-4 h-4 ${location ? "text-emerald-600" : "text-gray-400"}`} />
                   </div>
                   <div className="min-w-0">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <p className="font-semibold text-gray-700 text-sm">Lokasi Terkini</p>
-                      <span className="flex items-center gap-1 text-xs bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full flex-shrink-0">
-                        <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse inline-block" />
-                        Live
-                      </span>
-                    </div>
-                    {location ? (
-                      <p className="text-xs text-gray-400 truncate">
-                        {location.latitude.toFixed(5)}, {location.longitude.toFixed(5)}
-                        {location.accuracy ? ` · ±${Math.round(location.accuracy)}m` : ""}
-                      </p>
-                    ) : (
-                      <p className="text-xs text-gray-400">Belum ada data lokasi</p>
-                    )}
+                    <p className="font-semibold text-gray-700 text-sm">Lokasi Terkini</p>
+                    <p className="text-xs text-emerald-600">Mode Live</p>
+                    <p className="text-xs text-gray-500">
+                      Terakhir update: {location ? formatTime(location.createdAt) : lastRefresh.toLocaleTimeString("id-ID")}
+                    </p>
                   </div>
                 </div>
                 <button onClick={handleRefresh} className="flex items-center gap-1 text-emerald-600 text-xs font-medium flex-shrink-0">
                   <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin" : ""}`} />
                   Refresh
                 </button>
-              </>
-            ) : (
+              </div>
+            </div>
+          )}
+
+          {/* Info bar */}
+          {viewMode === "history" && (
+            <div className="bg-white border-b border-gray-100 lg:rounded-2xl lg:shadow lg:mb-3 px-4 py-3 flex items-center justify-between gap-2">
               <>
                 <div className="flex items-center gap-2 min-w-0">
                   <div className={`p-2 rounded-full flex-shrink-0 ${selectedHistory ? "bg-blue-100" : "bg-gray-100"}`}>
@@ -268,37 +267,74 @@ export default function DashboardPage() {
                   </button>
                 </div>
               </>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* MAP */}
-          <div ref={mapRef} className="bg-white overflow-hidden mx-3 sm:mx-4 lg:mx-0 h-[220px] sm:h-[260px] md:h-[320px] lg:h-[500px] lg:rounded-2xl lg:shadow isolate">
-            {loading ? (
-              <div className="h-full flex items-center justify-center text-gray-400">
-                <div className="text-center">
-                  <RefreshCw className="w-7 h-7 animate-spin mx-auto mb-2 text-emerald-400" />
-                  <p className="text-sm">Memuat peta...</p>
+          <div className={`mx-3 mt-3 sm:mx-4 lg:mx-0 lg:mt-0 ${viewMode === "live" ? "lg:flex lg:gap-4" : ""}`}>
+            <div
+              ref={mapRef}
+              className="bg-white overflow-hidden aspect-square sm:aspect-[4/3] md:aspect-[16/10] lg:aspect-auto lg:h-[500px] rounded-2xl shadow isolate flex-1"
+            >
+              {loading ? (
+                <div className="h-full flex items-center justify-center text-gray-400">
+                  <div className="text-center">
+                    <RefreshCw className="w-7 h-7 animate-spin mx-auto mb-2 text-emerald-400" />
+                    <p className="text-sm">Memuat peta...</p>
+                  </div>
                 </div>
-              </div>
-            ) : mapCenter ? (
-              <MapComponent
-                latitude={mapCenter.latitude}
-                longitude={mapCenter.longitude}
-                jamaahName={user?.name || "Jamaah"}
-                lastUpdated={formatTime(mapCenter.createdAt)}
-                viewMode={viewMode}
-                historyPoints={viewMode === "history" ? history : []}
-                selectedHistoryId={selectedHistory?.id}
-                onHistoryMarkerClick={handleSelectHistory}
-              />
-            ) : (
-              <div className="h-full flex flex-col items-center justify-center text-gray-400 gap-2 p-4">
-                <MapPin className="w-10 h-10 text-gray-300" />
-                <p className="text-sm text-center">Jamaah belum membagikan lokasi</p>
-                <button onClick={() => router.push("/location-screen")} className="mt-1 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
-                  Buka Location Screen
-                </button>
-              </div>
+              ) : mapCenter ? (
+                <MapComponent
+                  latitude={mapCenter.latitude}
+                  longitude={mapCenter.longitude}
+                  jamaahName={user?.name || "Jamaah"}
+                  lastUpdated={formatTime(mapCenter.createdAt)}
+                  viewMode={viewMode}
+                  historyPoints={viewMode === "history" ? history : []}
+                  selectedHistoryId={selectedHistory?.id}
+                  onHistoryMarkerClick={handleSelectHistory}
+                />
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center text-gray-400 gap-2 p-4">
+                  <MapPin className="w-10 h-10 text-gray-300" />
+                  <p className="text-sm text-center">Jamaah belum membagikan lokasi</p>
+                  <button onClick={() => router.push("/location-screen")} className="mt-1 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
+                    Buka Location Screen
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {viewMode === "live" && (
+              <aside className="hidden lg:flex lg:w-80 xl:w-96 flex-shrink-0 flex-col bg-white rounded-2xl shadow overflow-hidden">
+                <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className={`p-2 rounded-full ${location ? "bg-emerald-100" : "bg-gray-100"}`}>
+                      <MapPin className={`w-4 h-4 ${location ? "text-emerald-600" : "text-gray-400"}`} />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700">Lokasi Terkini</p>
+                      <p className="text-xs text-emerald-600">Mode Live</p>
+                    </div>
+                  </div>
+                  <button onClick={handleRefresh} className="flex items-center gap-1 text-emerald-600 text-xs font-medium">
+                    <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin" : ""}`} />
+                    Refresh
+                  </button>
+                </div>
+                <div className="p-5 space-y-3 text-sm">
+                  {location ? (
+                    <>
+                      <p className="text-gray-700"><span className="font-semibold">Latitude:</span> {location.latitude.toFixed(5)}</p>
+                      <p className="text-gray-700"><span className="font-semibold">Longitude:</span> {location.longitude.toFixed(5)}</p>
+                      <p className="text-gray-700"><span className="font-semibold">Akurasi:</span> ±{Math.round(location.accuracy)}m</p>
+                      <p className="text-gray-500 text-xs">Update: {formatTime(location.createdAt)}</p>
+                    </>
+                  ) : (
+                    <p className="text-gray-400">Belum ada data lokasi live.</p>
+                  )}
+                </div>
+              </aside>
             )}
           </div>
 
@@ -315,9 +351,8 @@ export default function DashboardPage() {
               Hidden on lg — desktop uses sidebar instead.
           */}
           {viewMode === "history" && (
-            <div className="lg:hidden bg-white border-t border-gray-100 mb-safe">
-              {/* Collapsible header */}
-              <button className="w-full flex items-center justify-between px-4 py-3 border-b border-gray-100 active:bg-gray-50" onClick={() => setHistoryPanelOpen((v) => !v)}>
+            <div className="lg:hidden mx-3 sm:mx-4 mt-3 rounded-2xl bg-white border border-gray-100 shadow mb-safe overflow-hidden">
+              <div className="w-full flex items-center justify-between px-4 py-3 border-b border-gray-100">
                 <div className="flex items-center gap-2">
                   <div className="bg-blue-100 p-1.5 rounded-full">
                     <Clock className="w-3.5 h-3.5 text-blue-600" />
@@ -325,29 +360,24 @@ export default function DashboardPage() {
                   <p className="font-semibold text-gray-700 text-sm">Riwayat Lokasi</p>
                   <span className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full">{history.length} titik</span>
                 </div>
-                {historyPanelOpen ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
-              </button>
-
-              {/* Expandable list */}
-              <div className="overflow-hidden transition-all duration-300" style={{ maxHeight: historyPanelOpen ? "60vh" : "0" }}>
-                {history.length === 0 ? (
-                  <p className="px-4 py-6 text-center text-sm text-gray-400">Belum ada riwayat lokasi</p>
-                ) : (
-                  <div className="overflow-y-auto divide-y divide-gray-50" style={{ maxHeight: "60vh" }}>
-                    {history.map((item, index) => (
-                      <HistoryRow key={item.id} item={item} index={index} total={history.length} isSelected={selectedHistory?.id === item.id} onSelect={handleSelectHistory} formatTime={formatTime} />
-                    ))}
-                  </div>
-                )}
-                {history.length > 0 && <p className="px-4 py-2 text-xs text-center text-gray-400 border-t border-gray-100 bg-gray-50">{history.length} titik · Klik untuk lihat di peta</p>}
               </div>
+              {history.length === 0 ? (
+                <p className="px-4 py-6 text-center text-sm text-gray-400">Belum ada riwayat lokasi</p>
+              ) : (
+                <div className="max-h-[45vh] overflow-y-auto divide-y divide-gray-50 touch-pan-y">
+                  {history.map((item, index) => (
+                    <HistoryRow key={item.id} item={item} index={index} total={history.length} isSelected={selectedHistory?.id === item.id} onSelect={handleSelectHistory} formatTime={formatTime} />
+                  ))}
+                </div>
+              )}
+              {history.length > 0 && <p className="px-4 py-2 text-xs text-center text-gray-400 border-t border-gray-100 bg-gray-50">{history.length} titik · Klik untuk lihat di peta</p>}
             </div>
           )}
         </div>
 
         {/* ─── RIGHT: Sidebar (desktop only, sticky) ─── */}
         {viewMode === "history" && (
-          <aside className="hidden lg:flex lg:w-80 xl:w-96 flex-shrink-0 flex-col bg-white rounded-2xl shadow overflow-hidden self-start sticky top-[72px]" style={{ maxHeight: "calc(100vh - 88px)" }}>
+          <aside className="hidden lg:flex lg:w-80 xl:w-96 flex-shrink-0 flex-col bg-white rounded-2xl shadow overflow-hidden self-start sticky top-4" style={{ maxHeight: "calc(100vh - 32px)" }}>
             <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-3 flex-shrink-0">
               <div className="bg-blue-100 p-2 rounded-full">
                 <Clock className="w-4 h-4 text-blue-600" />
